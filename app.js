@@ -12,6 +12,7 @@ app.set('public' , path.join(__dirname , "/public"));
 app.use(express.static('public'));
 const passport = require('passport');
 require('./passport/passport.js');
+require('./passport/facebook-passport.js');
 const session = require('express-session');
 const users = require('./db/models/users.js');
 app.use(session({
@@ -38,15 +39,34 @@ app.get('/' , (req,res)=>{
 app.get('/about' , (req,res)=>{
     res.render('about.ejs');
 })
+
+//facebook login request handling
+app.get('/auth/facebook',
+  passport.authenticate('facebook'));
+
+app.get('/auth/facebook/callback',
+  passport.authenticate('facebook', { failureRedirect: '/' }),
+  function(req, res) {
+    // Successful authentication, redirect home.
+    users.findById({_id:req.user._id}).then((user)=>{
+      res.render('profile.ejs' , {user:user});
+  });
+    
+  });
+
+  //google login request handling
 app.get('/auth/google',
   passport.authenticate('google', { scope: ['profile' , 'email'] }));
  
-app.get('/auth/google/callback', 
+app.get('auth/google/callback', 
   passport.authenticate('google', { failureRedirect: '/' }),
   function(req, res) {
     // Successful authentication, redirect home.
     // console.log(req.user);
-    res.redirect('/profile');
+    users.findById({_id:req.user._id}).then((user)=>{
+      res.render('profile.ejs' , {user:user});
+  });
+    
   });
 
   app.get('/profile' , async (req,res)=>{
