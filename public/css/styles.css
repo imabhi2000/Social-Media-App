@@ -1,4 +1,9 @@
-/* body{
-    background-color: aquamarine;
-    color: white;
-} */
+*{
+    padding: 0px;
+    margin: 0px;
+    box-sizing: border-box;
+}
+#homepage{
+    text-align: center;
+    
+}
