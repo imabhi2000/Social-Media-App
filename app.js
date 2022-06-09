@@ -42,7 +42,7 @@ app.get('/about' , (req,res)=>{
 })
 //instagram login handling
 app.get('/auth/instagram',
-  passport.authenticate('instagram'));
+  passport.authenticate('instagram' , { scope: ['profile' , 'email'] }));
 
 app.get('/auth/instagram/callback', 
   passport.authenticate('instagram', { failureRedirect: '/' }),
