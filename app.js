@@ -13,6 +13,7 @@ app.use(express.static('public'));
 const passport = require('passport');
 require('./passport/passport.js');
 require('./passport/facebook-passport.js');
+require('./passport/instagram-passport.js');
 const session = require('express-session');
 const users = require('./db/models/users.js');
 app.use(session({
@@ -39,6 +40,17 @@ app.get('/' , (req,res)=>{
 app.get('/about' , (req,res)=>{
     res.render('about.ejs');
 })
+//instagram login handling
+app.get('/auth/instagram',
+  passport.authenticate('instagram'));
+
+app.get('/auth/instagram/callback', 
+  passport.authenticate('instagram', { failureRedirect: '/' }),
+  function(req, res) {
+    // Successful authentication, redirect home.
+    res.send('instagram login completed');
+  });
+
 
 //facebook login request handling
 app.get('/auth/facebook',
