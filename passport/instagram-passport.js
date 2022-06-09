@@ -7,7 +7,7 @@ passport.use(new InstagramStrategy({
     clientID: keys.instagramclientid,
     clientSecret: keys.instagramsecret,
     callbackURL: "/auth/instagram/callback",
-    profileFields: ['basic', 'public_content', 'follower_list', 'comments', 'relationships', 'likes'],
+    scope: ['basic', 'public_content', 'follower_list', 'comments', 'relationships', 'likes'],
     proxy:true
   },
   function(accessToken, refreshToken, profile, done) {
