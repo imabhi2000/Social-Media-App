@@ -6,7 +6,8 @@ const keys = require('../config/keys.js');
 passport.use(new InstagramStrategy({
     clientID: keys.instagramclientid,
     clientSecret: keys.instagramsecret,
-    callbackURL: "/auth/instagram/callback"
+    callbackURL: "/auth/instagram/callback",
+    proxy:true
   },
   function(accessToken, refreshToken, profile, done) {
     console.log(profile);
