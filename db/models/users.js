@@ -1,38 +1,40 @@
 const mongoose = require('mongoose');
-const users = mongoose.model('users' , {
-    fullname:{
-        type:String,
-        default:" "
+const users = mongoose.model('users', {
+    fullname: {
+        type: String,
+        default: " "
     },
-    firstname:{
-        type:String
+    firstname: {
+        type: String
     },
-    lastname:{
-        type:String
+    lastname: {
+        type: String
     },
-    email:{
-        type:String,
-        default:" "
+    email: {
+        type: String,
+        default: " "
     },
-    image:{
-        type:String,
-        default:" "
+    image: {
+        type: String,
+        default: " "
     },
-    phone:{
-        type:Number
+    phone: {
+        type: Number,
+        default: " "
     },
-    location:{
-        type:String
+    location: {
+        type: String,
+        default: " "
     },
-    fbtokens:String,
-    facebook:{
-        type:String
+    fbtokens: String,
+    facebook: {
+        type: String
     },
-    google:{
-        type:String
+    google: {
+        type: String
     },
-    instagram:{
-        type:String
+    instagram: {
+        type: String
     }
 
 });

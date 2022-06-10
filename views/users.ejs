@@ -1,0 +1,17 @@
+<div class="conatiner-fluid">
+    <div class="row">
+    <% users.forEach((element , index , array)=>{  %>
+        <div class="col-sm-4">
+        <div class="card my-4" style="width: 18rem;">
+            <img src="<%= element.image %>" class="card-img-top" alt="user image">
+            <div class="card-body">
+              
+              <a href="/user/<%= element._id %>"><h5 class="card-title"><%= element.fullname %></h5></a>
+              <p id="address" class="card-title"><%= element.location %></p>
+              
+            </div>
+          </div>
+        </div>
+    <% }) %>
+</div>
+</div>

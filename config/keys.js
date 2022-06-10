@@ -4,6 +4,6 @@ module.exports = {
     googleclientsecret:"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",
     facebookclientid:"5306185099442543",
     facebookclientsecret:"b75f68ebf3022d118d0c3de53dc21fc3",
-    instagramclientid:"432940718331567",
-    instagramsecret:"8e5ebc4d5625332b7cab887960de48d2"
+ 
 }
+

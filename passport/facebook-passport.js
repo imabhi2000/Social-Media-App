@@ -12,10 +12,11 @@ passport.use(new FacebookStrategy({
     enableProof:true
   },
   function(accessToken, refreshToken, profile, done) {
-    console.log(profile);
+    // console.log(profile);
     // console.log(`http://graph.facebook/${profile.id}/picture?type=large`);
     users.findOne({facebook:profile.id}).then((user)=>{
       if(user){
+        // console.log(user.email);
        done(null , user);
       }else{
         const user1 = new users({
