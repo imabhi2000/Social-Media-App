@@ -1,0 +1,19 @@
+<div class="conatiner">
+    <% if(posts) {%>
+        <% posts.forEach((element , index , arrya)=>{ %>
+            <div class="media">
+                <img src="<%= element.user.image %>" class="mr-3 post-user-pic" alt="user-image">
+                <div class="media-body">
+                    <h3 class="mt-0"><%= element.user.fullname %></h3>
+                    <h4><%= element.title %> <small class="red"><i class="fa fa-globe"></i></small></h4>
+                    <p><%= element.body %></p>
+                    <small><%= element.date %></small>
+                </div>
+            </div>
+    <hr>
+
+            <% }) %>
+    <% }else { %>
+    <p>No Posts Found.....</p>
+    <% } %>
+</div>

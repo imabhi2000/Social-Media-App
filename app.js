@@ -17,7 +17,9 @@ require('./passport/facebook-passport.js');
 const { ensureAuthentication, ensureGuest } = require('./helpers/auth.js');
 const session = require('express-session');
 const users = require('./db/models/users.js');
+const post = require('./db/models/post.js');
 const { urlencoded } = require('body-parser');
+const bodyParser = require('body-parser');
 app.use(session({
   secret: 'keyboard cat',
   resave: false,
@@ -31,6 +33,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(express.json());
+app.use(bodyParser.json());
 app.use((req, res, next) => {
   res.locals.user = req.user || null;
   next();
@@ -38,6 +41,40 @@ app.use((req, res, next) => {
 app.get('/', ensureGuest, (req, res) => {
   res.render('home.ejs');
 })
+app.post('/savepost', (req, res) => {
+  var allowcomments;
+  if (req.body.allowcomments) {
+    allowcomments = true;
+  } else {
+    allowcomments = false;
+  }
+
+  const newpost = {
+    title: req.body.title,
+    body: req.body.body,
+    status: req.body.status,
+    allowcomments: allowcomments,
+    user: req.user._id,
+
+  }
+
+  const post1 = new post(newpost);
+  post1.save().then((post) => {
+    res.redirect('/posts');
+  });
+});
+
+//handling the posts showing page route
+app.get('/posts', ensureAuthentication, (req, res) => {
+  post.find({ status: 'public' }).populate('user').sort({ Date: 'desc' }).then((post) => {
+    res.render('publicpost.ejs', { posts: post });
+  });
+});
+
+app.get('/addpost', (req, res) => {
+  res.render('addpost.ejs');
+
+});
 
 app.get('/about', (req, res) => {
   res.render('about.ejs');
@@ -71,7 +108,7 @@ app.get('/auth/google/callback',
     // console.log(req.user);
     users.findById({ _id: req.user._id }).then((user) => {
       // console.log(user)
-      res.render('profile.ejs', { user: user });
+      res.redirect('/profile');
     });
 
   });
@@ -120,12 +157,38 @@ app.get('/users', (req, res) => {
     res.render('users.ejs', { users: users });
   })
 })
-
+app.post('/editingpost/:id', (req, res) => {
+  post.findById({ _id: req.params.id }).then((post) => {
+    var allowcomments;
+    if (req.body.allowcomments) {
+      allowcomments = true;
+    } else {
+      allowcomments = false;
+    }
+    post.title = req.body.title;
+    post.body = req.body.body;
+    post.status = req.body.status;
+    post.allowcomments = allowcomments;
+    post.save().then(() => {
+      res.redirect('/profile');
+    }).catch((error) => {
+      return console.log(error);
+    });
+  }).catch((error) => {
+    return console.log(error);
+  });
+})
+app.get('/editpost/:id', (req, res) => {
+  post.findById({ _id: req.params.id }).then((posts) => {
+    console.log(posts);
+    res.render('editingpost.ejs', { posts: posts });
+  });
+});
 app.get('/profile', ensureAuthentication, async (req, res) => {
   // console.log(req.user);
-  users.findById({ _id: req.user._id }).then((user) => {
-
-    res.render('profile.ejs', { user: user });
+  post.find({ user: req.user._id }).populate('user').then((posts) => {
+    // console.log(posts.length);
+    res.render('profile.ejs', { posts: posts });
 
   })
 
@@ -142,3 +205,4 @@ app.listen(port, (error) => {
 
   console.log(`server is listening from the port ${port}`);
 })
+
