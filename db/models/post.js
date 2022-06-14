@@ -32,7 +32,7 @@ const postschema = new Schema({
             type: Schema.Types.ObjectId,
             ref: 'users'
         },
-        commentdata: {
+        commentdate: {
             type: Date,
             default: Date.now
         }

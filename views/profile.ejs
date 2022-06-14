@@ -86,11 +86,14 @@
       <img src="<%= user.image %>" alt="user-image" class="mr-3 post-user-pic">
       <div class="media-body">
         <h3 class="mt-0"><%= user.fullname %></h3>
-        <h4><%= element.title %> <small class="red"><%= element.status %></small></h4>
+        <h4><%= element.title %> <small class="red">(<%= element.status %> Post)</small></h4>
         <p><%= element.body %></p>
         <small><%= element.date %></small>
         <br>
-        <p><a href="/editpost/<%= element._id %>"><i class="fa fa-pencil">edit post</i></a></p>
+        <p><a href="/editpost/<%= element._id %>"><i class="fa fa-pencil">   Edit Post</i></a></p>
+        <form action="/<%= element._id %>?_method=DELETE" method="POST">
+          <button type="submit" class="btn btn-danger"><i class="fa fa-trash"></i></button>
+        </form>
       </div>
     </div>
     <hr>

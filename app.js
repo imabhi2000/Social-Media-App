@@ -66,7 +66,7 @@ app.post('/savepost', (req, res) => {
 
 //handling the posts showing page route
 app.get('/posts', ensureAuthentication, (req, res) => {
-  post.find({ status: 'public' }).populate('user').sort({ Date: 'desc' }).then((post) => {
+  post.find({ status: 'public' }).populate('user').populate("comments.commentuser").sort({ Date: 'desc' }).then((post) => {
     res.render('publicpost.ejs', { posts: post });
   });
 });
@@ -178,6 +178,23 @@ app.post('/editingpost/:id', (req, res) => {
     return console.log(error);
   });
 })
+app.post('/:id', async (req, res) => {
+  await post.findByIdAndDelete({ _id: req.params.id });
+  res.redirect('/profile');
+});
+
+app.post('/addcomment/:id', (req, res) => {
+  post.findById({ _id: req.params.id }).then((post) => {
+    const newcomment = {
+      commentbody: req.body.commentbody,
+      commentuser: req.user._id
+    }
+    post.comments.push(newcomment);
+    post.save().then(() => {
+      res.redirect('/posts');
+    });
+  });
+});
 app.get('/editpost/:id', (req, res) => {
   post.findById({ _id: req.params.id }).then((posts) => {
     console.log(posts);

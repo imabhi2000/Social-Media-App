@@ -8,6 +8,35 @@
                     <h4><%= element.title %> <small class="red"><i class="fa fa-globe"></i></small></h4>
                     <p><%= element.body %></p>
                     <small><%= element.date %></small>
+                    <br>
+                    <% if(element.allowcomments){ %>
+                        <% element.comments.forEach((element1 , index , array)=>{ %>
+                            <div class="media mt-3">
+                                <a href="#" class="pr-3">
+                                    <img src="<%= element1.commentuser.image %>" alt="">
+                                </a>
+                                <div class="media-body">
+                                    <h5 class="my-0"><%= element1.commentuser.fullname %></h5>
+                                    <p><%= element1.commentbody %></p>
+                                    <small><%= element1.commentdate %></small>
+                                </div>
+                            </div>  
+                        <% }) %>
+                        
+                        <br>
+                        <form class="row g-3" action="/addcomment/<%= element._id %>" method="post">
+                            
+                        <div class="col-auto">
+                              <!-- <label for="Comments" class="visually-hidden">Password</label> -->
+                              <input type="text" class="form-control" name="commentbody" placeholder="Comment here..">
+                            </div>
+                            <div class="col-auto">
+                              <button type="submit" class="btn btn-primary mb-3"><i class="fa fa-comment"></i></button>
+                            </div>
+                        </form>
+                    <% }else{ %>
+                        <p style="color:red;">Comments are not allowed</p>
+                        <% } %>   
                 </div>
             </div>
     <hr>
